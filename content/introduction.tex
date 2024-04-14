@@ -1,5 +1,76 @@
 % ==== Introduction ====
 \section{Introduction}
 
-\begin{frame}{}
+\begin{frame}[fragile]{Spoiler: how does C++ interpretation look like?}
+  \def\clingPrompt{\textcolor{black!34}{[cling]\$ }}
+  You can do
+  \begin{lstlisting}[style=c++]
+`\clingPrompt` template <typename T>
+  T f(T a, T b) {
+    return a + b;
+  }
+`\clingPrompt` f(42, 6)
+(int) 48
+  \end{lstlisting}
+
+  \pause
+  And then
+  \begin{lstlisting}[style=c++]
+`\clingPrompt` std::string S{"Hello,"};
+`\clingPrompt` f(S, std::string{" world!"})
+(std::basic_string<char, std::char_traits<char>, std::allocator<char> >) "Hello, world!"
+  \end{lstlisting}
+
+  \pause
+  But also the abomination below
+  \begin{lstlisting}[style=c++]
+`\clingPrompt` std::vector<int> f{1, 2, 3};
+`\clingPrompt` f
+(std::vector<int> &) { 1, 2, 3 }
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}{Why bothering to interpret C++?}
+  \begin{itemize}
+  \item Many languages already offer a REPL (Read-Eval-Print-Loop) even if not designed to be interpreted, e.g. \texttt{C\#}
+  \item It aids a lot while learning the language: try things out!
+  \item Iterative / exploratory prototyping
+  \item Write 'scripts' that make use of C/C++ libraries
+
+  \item \ldots{}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Current state of affairs}
+  \begin{itemize}
+    \itemsep=1ex
+
+  \item Cling is built on Clang and LLVM 13 (enabling support for C++20)
+  \item CUDA support
+  \item Allows loading an external library (\texttt{.so} / \texttt{.dll}) and get access to its symbols, e.g. call a function
+  \item Debugging and profiling of JITed code
+  \item Undo steps
+  \item Protection against invalid memory accesses, e.g. dereferencing a pointer that points to unmapped memory
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Current state of affairs}
+  But also some features that one would expect from an interpreter (even if that's not ISO C++)\ldots{}
+  \vfill
+  \begin{itemize}
+    \itemsep=1ex
+
+  \item Top-level statements
+
+  \item Print the result of expression evaluation
+
+  \item \texttt{auto} synthesizing, i.e. \inlineCode{foo = 42.0;} is equivalent to \inlineCode{auto foo = 42.0;}\\
+    (if \inlineCode{foo} not declared before) \deprecated{}
+
+  \item Support for redefining entities, e.g.
+\begin{lstlisting}[style=C++]
+int foo = 0;
+std::string foo{"Hello!"};
+\end{lstlisting}
+  \end{itemize}
 \end{frame}

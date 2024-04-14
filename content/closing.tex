@@ -1,8 +1,40 @@
 % ==== Closing words ====
 \section{Closing words}
 
-\begin{frame}{}
+\begin{frame}{Closing words}
+  \begin{block}{Key ideas to take home}
+    \begin{itemize}
+    \item Cling enables incremental C++ compilation and JITting
+      \begin{itemize}
+      \item It would not be possible without the solid framework provided by LLVM and clang
+      \end{itemize}
+
+    \item Convenient integration with Jupyter notebook via \texttt{xeus-cling}
+    \item Try it!
+    \end{itemize}
+  \end{block}
+  \vfill
+  \begin{block}{For the curious}
+    \begin{itemize}
+    \item cppyy / libinterop provide interoperability with other languages
+      \begin{itemize}
+      \item Enabling crazy things such as injecting the C++ definition of a type \inlineCode{T} and creating an object of type \inlineCode{T} from Python
+
+      \item Or even crazier: on-the-fly template instantiation, e.g. a \inlineCode{std::vector$<T>$}%
+        \footnote{\cppyyURL}%
+        \footnote{\libinteropURL}
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{How can I get it?}
+  \begin{center}
+    \qrcode[height=1in]{\clingURL}\\[1ex]
+    \url{\clingURL}
+  \end{center}
+
   \begin{itemize}
-  \item 
+  \item If you have `llvm` installed locally, try \texttt{clang-repl}
   \end{itemize}
 \end{frame}

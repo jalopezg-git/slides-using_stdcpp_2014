@@ -8,6 +8,7 @@
 \usepackage[utf8]{luainputenc}
 \usepackage[T1]{fontenc}
 \usepackage{fontawesome5}
+\usepackage{qrcode}
 \usepackage[export]{adjustbox}
 %\ttfamily\DeclareFontShape{T1}{lmtt}{m}{it}
 %                          {<->sub*lmtt/m/sl}{}
@@ -18,6 +19,10 @@
 \definecolor{deprecated}{HTML}{E85D04}
 
 \def\deprecated{\tikz\node[draw,color=deprecated,densely dotted,fill=deprecated!50!white!30,rounded corners,font=\fontsize{6}{6}\selectfont]{DEPRECATED};}
+
+\def\clingURL{https://github.com/root-project/cling/}
+\def\cppyyURL{https://cppyy.readthedocs.io/}
+\def\libinteropURL{https://compiler-research.org/libinterop/}
 
 \hypersetup{final,
 	        plainpages=false,
@@ -51,7 +56,7 @@
     escapechar=`,
     tabsize=3,
     breaklines=true,
-    basicstyle={\ttfamily\footnotesize},
+    basicstyle={\ttfamily\scriptsize},
     keywordstyle={\color{lstkeyword}\bfseries},
     commentstyle={\color{lstcomment}},
     stringstyle={\color{lststring}},
@@ -68,7 +73,7 @@
 
 \title{Interpreted C++: Is that a thing?}
 \subtitle{A journey through LLVM/clang-based C++ JITting}
-\author[Javier López-Gómez]{Javier López-Gómez}
+\author[Javier López-Gómez]{Javier López-Gómez for the ROOT team}
 \date{\texttt{using std::cpp}, 2024-04-25}
 
 \begin{document}
