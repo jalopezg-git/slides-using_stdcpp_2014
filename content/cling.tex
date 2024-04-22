@@ -1,5 +1,110 @@
 % ==== The cling C++ interpreter ====
 \section{The cling C++ interpreter}
 
-\begin{frame}{}
+\begin{frame}[fragile]{Cling's pipeline}
+  \input{fig/cling-pipeline.tex}
+
+  \only<7->{
+    \begin{tikzpicture}[remember picture,overlay]
+      \node[anchor=east,opacity=.9] at ($(current page.east)+(-.85in,-.8in)$) {\tikz{
+          \StickyNotePi[1.2in]{
+            \begin{itemize}
+            \item Deferred (implicit) template instantiations \textbf{must} be emitted; we do that by forcing a end-of-TU event!
+            \item CodeGen: also involves linking (external symbol resolution, etc.)
+            \end{itemize}
+          }[3in]%
+      }};
+    \end{tikzpicture}
+  }
+\end{frame}
+
+\begin{frame}[fragile]{Transactions}
+  \begin{itemize}
+    \itemsep=1ex
+
+  \item AST is built incrementally
+
+  \item \textbf{Transaction:} declarations that were parsed and emitted in a single step
+    \begin{itemize}
+    \item User-provided declarations
+    \item Implicit template instatiations
+    \item Deserialized declarations from a C++ module
+    \end{itemize}
+
+  \item And allows undoing it.  That's useful, e.g. after a failed parse
+%    \begin{lstlisting}[style=c++]
+%`\clingPrompt` auto p = std::make_unique<std::string>("Hi there!");
+%`\clingPrompt` `\lsthl{p.size()}`
+%  error: no member named 'size' in 'std::unique_ptr<std::basic_string<char>, std::default_delete<std::basic_string<char> > >'; did you mean to use '->' instead of '.'?
+%  p.size()
+%   ^
+%    \end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Extensions}
+  \begin{itemize}
+    \itemsep=1ex
+
+  \item Most extensions are implemented as an AST transformer
+  \item Currently, there is support for
+    \begin{itemize}
+    \item \inlineCode{auto} synthesizing, e.g. \inlineCode{foobar = 42.0f;}
+      \pause
+
+    \item Protection against invalid pointer deferencing, e.g.
+      \begin{lstlisting}[style=c++]
+`\clingPrompt` *((int *)0xff00ff00) = 0;
+Error in <HandleInterpreterException>: Trying to access a pointer that points to an invalid memory address.
+Execution of your code was aborted.
+ROOT_prompt_6:1:2: `\alert{warning:}` invalid memory pointer passed to a callee:
+*((int *)0xff00ff00) = 0;
+ ^~~~~~~~~~~~~~~~~~~
+      \end{lstlisting}
+      \pause
+
+    \item Shadowing of definitions
+      \begin{lstlisting}[style=c++]
+`\clingPrompt` int foobar = 0;
+`\clingPrompt` std::string foobar() { return "A string!"; }
+      \end{lstlisting}
+      \pause
+
+    \item Printing / capturing the value of an expression
+      \begin{lstlisting}[style=c++]
+`\clingPrompt` foobar()
+(std::string) "A string!"
+      \end{lstlisting}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Debugging / Profiling of JIT'ed code}
+  Cling also allows debugging JITed code and offers integration with Linux's \texttt{perf}, e.g.
+  \vfill
+
+  \begin{itemize}
+  \item A breakpoint on interpreted code can be set and step-into after each statement
+
+  \item It can generate a symbol file for \texttt{perf} -- Can be used together with Flamegraph%
+    \footnote{Flamegraph: \url{\flamegraphURL}}!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{The future of cling: \protect\texttt{clang-repl}}
+  \begin{itemize}
+    \itemsep=1ex
+
+  \item Cling proved to perform okay in the context of the larger ROOT project at CERN
+
+  \item Let's upstream the foundations of it back to the LLVM community so that
+    \begin{itemize}
+    \item The whole community can benefit from it
+    \item Maintenance is easier in the long term
+    \end{itemize}
+
+  \item \texttt{clang-repl}: already in recent versions of LLVM --- \alert{Thanks, Vassil!}
+
+  \item Slightly different to the design of cling, e.g. modeling of top-level statements is much more rubust
+  \end{itemize}
 \end{frame}

@@ -20,10 +20,13 @@
 
 \def\deprecated{\tikz\node[draw,color=deprecated,densely dotted,fill=deprecated!50!white!30,rounded corners,font=\fontsize{6}{6}\selectfont]{DEPRECATED};}
 
+\def\clingPrompt{\textcolor{black!34}{[cling]\$ }}
+
 \def\llvmURL{https://llvm.org/}
 \def\clingURL{https://github.com/root-project/cling/}
 \def\cppyyURL{https://cppyy.readthedocs.io/}
 \def\libinteropURL{https://compiler-research.org/libinterop/}
+\def\flamegraphURL{https://github.com/brendangregg/FlameGraph}
 
 \hypersetup{final,
 	        plainpages=false,
@@ -68,6 +71,13 @@
 %    keywordstyle=[2]{\color{lstkeyword}\bfseries},
 %    morekeywords=[2]{},
 }
+\lstdefinestyle{bash}{
+    language=bash,
+    backgroundcolor=\color{black!6},
+}
+\newsavebox\lstlistingIn
+\newsavebox\lstlistingWrap
+\newsavebox\lstlistingCodeGen
 
 \def\lsthl#1{\raisebox{-.1ex}{\tikz\node[inner sep=0pt,fill=lsthl]{#1};}}
 \def\inlineCode#1{\raisebox{-.7ex}{\tikz{\node[font={\footnotesize\ttfamily},rounded corners,color=lstinline,fill=black!6]{#1};}}}
